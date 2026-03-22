@@ -1,4 +1,4 @@
-const { MongoClient } = require('mongodb');
+import { MongoClient } from 'mongodb';
 
 // Cache the database connection
 let cachedDb = null;
@@ -17,7 +17,7 @@ async function connectToDatabase(uri) {
     return db;
 }
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
     // Only allow POST requests
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method Not Allowed' });
