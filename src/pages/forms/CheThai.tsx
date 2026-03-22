@@ -17,29 +17,29 @@ const dialogues = [
 
 const cupPositions = [
     // 1. Left base (default)
-    { xOffset: '-6rem', bottom: '-0.5rem', rotate: -15, scale: 0.9, delay: 1.0, floatClass: 'animate-float-delayed', zIndex: 10 },
+    { xOffset: '-7.5rem', bottom: '-0.5rem', rotate: -15, scale: 0.9, delay: 1.0, floatClass: 'animate-float-delayed', zIndex: 10 },
     // 2. Right base (default)
-    { xOffset: '5.5rem', bottom: '0.5rem', rotate: 12, scale: 0.95, delay: 1.2, floatClass: 'animate-float', zIndex: 10 },
+    { xOffset: '4rem', bottom: '0.5rem', rotate: 12, scale: 0.95, delay: 1.2, floatClass: 'animate-float', zIndex: 10 },
     // 3. Front Left (below dragon)
-    { xOffset: '-2.5rem', bottom: '-1.5rem', rotate: -25, scale: 0.85, delay: 0.2, floatClass: 'animate-float', zIndex: 30 },
+    { xOffset: '-4rem', bottom: '-1.5rem', rotate: -25, scale: 0.85, delay: 0.2, floatClass: 'animate-float', zIndex: 30 },
     // 4. Front Right (below dragon)
-    { xOffset: '2.5rem', bottom: '-1rem', rotate: 20, scale: 0.9, delay: 0.3, floatClass: 'animate-float-delayed', zIndex: 30 },
+    { xOffset: '1rem', bottom: '-1rem', rotate: 20, scale: 0.9, delay: 0.3, floatClass: 'animate-float-delayed', zIndex: 30 },
     // 5. Far Left Mid
-    { xOffset: '-8rem', bottom: '1rem', rotate: -35, scale: 0.8, delay: 0.4, floatClass: 'animate-float', zIndex: 5 },
+    { xOffset: '-9.5rem', bottom: '1rem', rotate: -35, scale: 0.8, delay: 0.4, floatClass: 'animate-float', zIndex: 5 },
     // 6. Far Right Mid
-    { xOffset: '7.5rem', bottom: '1.5rem', rotate: 30, scale: 0.85, delay: 0.5, floatClass: 'animate-float-delayed', zIndex: 5 },
+    { xOffset: '6rem', bottom: '1.5rem', rotate: 30, scale: 0.85, delay: 0.5, floatClass: 'animate-float-delayed', zIndex: 5 },
     // 7. Front Center (lowest)
-    { xOffset: '0rem', bottom: '-2rem', rotate: -5, scale: 1, delay: 0.6, floatClass: 'animate-float-delayed', zIndex: 35 },
+    { xOffset: '-1.5rem', bottom: '-2rem', rotate: -5, scale: 1, delay: 0.6, floatClass: 'animate-float-delayed', zIndex: 35 },
     // 8. Left High (behind)
-    { xOffset: '-4.5rem', bottom: '2rem', rotate: -10, scale: 0.75, delay: 0.7, floatClass: 'animate-float', zIndex: 5 },
+    { xOffset: '-6rem', bottom: '2rem', rotate: -10, scale: 0.75, delay: 0.7, floatClass: 'animate-float', zIndex: 5 },
     // 9. Right High (behind)
-    { xOffset: '4rem', bottom: '2.5rem', rotate: 15, scale: 0.75, delay: 0.8, floatClass: 'animate-float-delayed', zIndex: 5 },
+    { xOffset: '2.5rem', bottom: '2.5rem', rotate: 15, scale: 0.75, delay: 0.8, floatClass: 'animate-float-delayed', zIndex: 5 },
     // 10. Far Left Low (front-ish)
-    { xOffset: '-6.5rem', bottom: '-1.5rem', rotate: -20, scale: 0.7, delay: 0.9, floatClass: 'animate-float', zIndex: 25 },
+    { xOffset: '-8rem', bottom: '-1.5rem', rotate: -20, scale: 0.7, delay: 0.9, floatClass: 'animate-float', zIndex: 25 },
     // 11. Far Right Low (front-ish)
-    { xOffset: '6.5rem', bottom: '-1rem', rotate: 25, scale: 0.7, delay: 1.1, floatClass: 'animate-float-delayed', zIndex: 25 },
+    { xOffset: '5rem', bottom: '-1rem', rotate: 25, scale: 0.7, delay: 1.1, floatClass: 'animate-float-delayed', zIndex: 25 },
     // 12. Front Far Right (lowest)
-    { xOffset: '4.5rem', bottom: '-2.5rem', rotate: 10, scale: 0.95, delay: 1.3, floatClass: 'animate-float', zIndex: 35 },
+    { xOffset: '3rem', bottom: '-2.5rem', rotate: 10, scale: 0.95, delay: 1.3, floatClass: 'animate-float', zIndex: 35 },
 ];
 
 export default function CheThai() {
@@ -228,7 +228,7 @@ export default function CheThai() {
                         <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white border-b-2 border-r-2 border-red-100 rotate-45"></div>
                     </div>
 
-                    <div className="relative flex items-end justify-center w-full">
+                    <div className="relative flex items-end justify-center w-full mb-12">
                         <AnimatePresence>
                             {Array.from({ length: Math.min(displayCups, cupPositions.length) }).map((_, i) => {
                                 const pos = cupPositions[i];
