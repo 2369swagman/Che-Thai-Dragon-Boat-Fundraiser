@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Home } from 'lucide-react';
 
 const PRICE_PER_CUP = 5;
 
@@ -158,6 +160,13 @@ export default function CheThai() {
             <div className="max-w-md w-full bg-white rounded-3xl shadow-xl overflow-hidden relative min-h-[600px] flex flex-col">
                 
                 <div className="bg-red-600 text-white p-6 text-center z-10 relative shadow-md">
+                    <Link 
+                        to="/" 
+                        className="absolute top-6 left-6 text-red-200 hover:text-white transition-colors"
+                        title="Return Home"
+                    >
+                        <Home size={24} />
+                    </Link>
                     <h1 className="text-2xl font-bold tracking-tight">Chè Thái Fundraiser</h1>
                     <p className="text-red-100 text-sm mt-1">Cornell Dragon Boat Club</p>
                 </div>
