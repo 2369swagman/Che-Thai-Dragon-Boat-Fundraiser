@@ -8,18 +8,7 @@ export default defineConfig(({mode}) => {
   return {
     plugins: [
       react(), 
-      tailwindcss(),
-      {
-        name: 'mock-api',
-        configureServer(server) {
-          server.middlewares.use('/api/submit', (req, res) => {
-            if (req.method === 'POST') {
-              res.setHeader('Content-Type', 'application/json');
-              res.end(JSON.stringify({ success: true, message: 'Mock order submitted successfully', orderId: 'mock-id-123' }));
-            }
-          });
-        }
-      }
+      tailwindcss()
     ],
     define: {
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),

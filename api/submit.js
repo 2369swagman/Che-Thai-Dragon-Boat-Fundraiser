@@ -38,11 +38,15 @@ export default async function handler(req, res) {
         }
 
         const db = await connectToDatabase(uri);
-        const collection = db.collection('CheThaiOrders');
+        const collection = db.collection('Submissions');
 
         // Insert the order
         const result = await collection.insertOne({
             ...data,
+            formId: data.formId || 'che-thai', // Default to che-thai if not provided
+            paid: false,
+            pickedUp: false,
+            adminNotes: "",
             createdAt: new Date()
         });
 
