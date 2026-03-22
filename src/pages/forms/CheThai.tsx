@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Home } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import TriangleGrid from '../../components/TriangleGrid';
+import CheThaiCup from '../../components/CheThaiCup';
 
 const PRICE_PER_CUP = 5;
 
@@ -12,6 +13,33 @@ const dialogues = [
     { text: "Ooh, the best part! How many cups would you like?", expression: "excited" },
     { text: "Almost done! Just review your total and payment instructions.", expression: "happy" },
     { text: "Yay! Thank you so much for supporting us!", expression: "excited" }
+];
+
+const cupPositions = [
+    // 1. Left base (default)
+    { xOffset: '-6rem', bottom: '-0.5rem', rotate: -15, scale: 0.9, delay: 1.0, floatClass: 'animate-float-delayed', zIndex: 10 },
+    // 2. Right base (default)
+    { xOffset: '5.5rem', bottom: '0.5rem', rotate: 12, scale: 0.95, delay: 1.2, floatClass: 'animate-float', zIndex: 10 },
+    // 3. Front Left (below dragon)
+    { xOffset: '-2.5rem', bottom: '-1.5rem', rotate: -25, scale: 0.85, delay: 0.2, floatClass: 'animate-float', zIndex: 30 },
+    // 4. Front Right (below dragon)
+    { xOffset: '2.5rem', bottom: '-1rem', rotate: 20, scale: 0.9, delay: 0.3, floatClass: 'animate-float-delayed', zIndex: 30 },
+    // 5. Far Left Mid
+    { xOffset: '-8rem', bottom: '1rem', rotate: -35, scale: 0.8, delay: 0.4, floatClass: 'animate-float', zIndex: 5 },
+    // 6. Far Right Mid
+    { xOffset: '7.5rem', bottom: '1.5rem', rotate: 30, scale: 0.85, delay: 0.5, floatClass: 'animate-float-delayed', zIndex: 5 },
+    // 7. Front Center (lowest)
+    { xOffset: '0rem', bottom: '-2rem', rotate: -5, scale: 1, delay: 0.6, floatClass: 'animate-float-delayed', zIndex: 35 },
+    // 8. Left High (behind)
+    { xOffset: '-4.5rem', bottom: '2rem', rotate: -10, scale: 0.75, delay: 0.7, floatClass: 'animate-float', zIndex: 5 },
+    // 9. Right High (behind)
+    { xOffset: '4rem', bottom: '2.5rem', rotate: 15, scale: 0.75, delay: 0.8, floatClass: 'animate-float-delayed', zIndex: 5 },
+    // 10. Far Left Low (front-ish)
+    { xOffset: '-6.5rem', bottom: '-1.5rem', rotate: -20, scale: 0.7, delay: 0.9, floatClass: 'animate-float', zIndex: 25 },
+    // 11. Far Right Low (front-ish)
+    { xOffset: '6.5rem', bottom: '-1rem', rotate: 25, scale: 0.7, delay: 1.1, floatClass: 'animate-float-delayed', zIndex: 25 },
+    // 12. Front Far Right (lowest)
+    { xOffset: '4.5rem', bottom: '-2.5rem', rotate: 10, scale: 0.95, delay: 1.3, floatClass: 'animate-float', zIndex: 35 },
 ];
 
 export default function CheThai() {
@@ -31,6 +59,7 @@ export default function CheThai() {
     const [dragonOpacity, setDragonOpacity] = useState(1);
 
     const d = dialogues[currentStep];
+    const displayCups = currentStep < 2 ? 2 : formData.quantity;
 
     useEffect(() => {
         // Trigger the exit animation after a short delay
@@ -199,23 +228,54 @@ export default function CheThai() {
                         <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white border-b-2 border-r-2 border-red-100 rotate-45"></div>
                     </div>
 
-                    <div className="w-24 h-24 relative animate-bob">
-                        <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-md overflow-visible">
-                            <path d="M 30 80 C 30 45, 40 35, 50 35 C 60 35, 70 45, 70 80 Z" fill="#dc2626" />
-                            <path d="M 40 80 C 40 55, 45 45, 50 45 C 55 45, 60 55, 60 80 Z" fill="#fca5a5" />
-                            <circle cx="50" cy="35" r="22" fill="#dc2626" />
-                            <ellipse cx="50" cy="44" rx="14" ry="10" fill="#fca5a5" />
-                            <circle cx="45" cy="42" r="2" fill="#991b1b" />
-                            <circle cx="55" cy="42" r="2" fill="#991b1b" />
-                            {renderDragonEyes()}
-                            <path d="M 33 18 Q 25 5 20 12 Q 28 22 33 22 Z" fill="#fbbf24" />
-                            <path d="M 67 18 Q 75 5 80 12 Q 72 22 67 22 Z" fill="#fbbf24" />
-                            <polygon points="50,13 44,3 56,3" fill="#fbbf24" />
-                            <polygon points="32,45 20,40 26,52" fill="#fbbf24" />
-                            <polygon points="68,45 80,40 74,52" fill="#fbbf24" />
-                            <path d="M 35 60 Q 22 65 28 72" fill="none" stroke="#dc2626" strokeWidth="7" strokeLinecap="round" />
-                            <path d="M 65 60 Q 78 65 72 72" fill="none" stroke="#dc2626" strokeWidth="7" strokeLinecap="round" />
-                        </svg>
+                    <div className="relative flex items-end justify-center w-full">
+                        <AnimatePresence>
+                            {Array.from({ length: Math.min(displayCups, cupPositions.length) }).map((_, i) => {
+                                const pos = cupPositions[i];
+                                return (
+                                    <motion.div 
+                                        key={`cup-${i}`}
+                                        initial={{ scale: 0, opacity: 0, rotate: pos.rotate - 45 }}
+                                        animate={{ scale: pos.scale, opacity: 1, rotate: pos.rotate }}
+                                        exit={{ scale: 0, opacity: 0, rotate: pos.rotate + 45 }}
+                                        transition={{ type: "spring", delay: currentStep < 2 ? pos.delay : 0, duration: 0.5 }}
+                                        className="absolute"
+                                        style={{ 
+                                            left: '50%',
+                                            marginLeft: pos.xOffset,
+                                            bottom: pos.bottom,
+                                            width: '4rem',
+                                            height: '4rem',
+                                            zIndex: pos.zIndex,
+                                            transform: 'translateX(-50%)'
+                                        }}
+                                    >
+                                        <div className={`w-full h-full ${pos.floatClass}`}>
+                                            <CheThaiCup />
+                                        </div>
+                                    </motion.div>
+                                );
+                            })}
+                        </AnimatePresence>
+
+                        <div className="w-24 h-24 relative animate-bob z-20">
+                            <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-md overflow-visible">
+                                <path d="M 30 80 C 30 45, 40 35, 50 35 C 60 35, 70 45, 70 80 Z" fill="#dc2626" />
+                                <path d="M 40 80 C 40 55, 45 45, 50 45 C 55 45, 60 55, 60 80 Z" fill="#fca5a5" />
+                                <circle cx="50" cy="35" r="22" fill="#dc2626" />
+                                <ellipse cx="50" cy="44" rx="14" ry="10" fill="#fca5a5" />
+                                <circle cx="45" cy="42" r="2" fill="#991b1b" />
+                                <circle cx="55" cy="42" r="2" fill="#991b1b" />
+                                {renderDragonEyes()}
+                                <path d="M 33 18 Q 25 5 20 12 Q 28 22 33 22 Z" fill="#fbbf24" />
+                                <path d="M 67 18 Q 75 5 80 12 Q 72 22 67 22 Z" fill="#fbbf24" />
+                                <polygon points="50,13 44,3 56,3" fill="#fbbf24" />
+                                <polygon points="32,45 20,40 26,52" fill="#fbbf24" />
+                                <polygon points="68,45 80,40 74,52" fill="#fbbf24" />
+                                <path d="M 35 60 Q 22 65 28 72" fill="none" stroke="#dc2626" strokeWidth="7" strokeLinecap="round" />
+                                <path d="M 65 60 Q 78 65 72 72" fill="none" stroke="#dc2626" strokeWidth="7" strokeLinecap="round" />
+                            </svg>
+                        </div>
                     </div>
                 </div>
 
@@ -226,12 +286,8 @@ export default function CheThai() {
                         <div className="w-full h-full flex-shrink-0 p-6 flex flex-col step-container overflow-y-auto">
                             <h2 className="text-xl font-bold text-stone-800 mb-2 text-center">Welcome!</h2>
                             <p className="text-stone-600 text-center mb-4 leading-relaxed text-sm">
-                                Please support our goal of racing in San Francisco by purchasing a delicious, refreshing cup of sweet Vietnamese fruit cocktail :))
+                                Help us paddle our way to San Francisco! Grab a refreshing cup of sweet Vietnamese fruit cocktail and fuel our journey.
                             </p>
-                            <div className="bg-red-50 p-3 rounded-xl border border-red-100 mb-4 text-center">
-                                <span className="block font-bold text-red-600 text-lg">1 Cup of Chè Thái</span>
-                                <span className="block text-stone-500 font-medium text-sm">$5.00</span>
-                            </div>
                             <div className="mt-auto">
                                 <button type="button" onClick={handleNext} className="w-full bg-red-600 text-white font-bold py-3 rounded-xl shadow-md hover:bg-red-700 transition-colors relative z-20">Start Order</button>
                             </div>
