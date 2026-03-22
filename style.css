@@ -1,0 +1,32 @@
+/* Custom animations for the dragon and UI */
+@keyframes bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.animate-bob {
+    animation: bob 2.5s ease-in-out infinite;
+}
+
+/* Hide scrollbar for clean wizard look */
+.step-container::-webkit-scrollbar {
+    width: 6px;
+}
+.step-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+.step-container::-webkit-scrollbar-thumb {
+    background-color: #e7e5e4;
+    border-radius: 10px;
+}
+
+/* Transition classes */
+.fade-enter {
+    opacity: 0;
+    transform: scale(0.95);
+}
+.fade-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 300ms, transform 300ms;
+}

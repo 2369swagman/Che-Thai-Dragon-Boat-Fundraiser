@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cornell Dragon Boat - Chè Thái Fundraiser</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-red-50 text-stone-800 font-sans antialiased min-h-screen flex flex-col items-center justify-center p-4">
+    <!-- App Container -->
+    <div class="max-w-md w-full bg-white rounded-3xl shadow-xl overflow-hidden relative min-h-[600px] flex flex-col">
+        
+        <!-- Header -->
+        <div class="bg-red-600 text-white p-6 text-center z-10 relative shadow-md">
+            <h1 class="text-2xl font-bold tracking-tight">Chè Thái Fundraiser</h1>
+            <p class="text-red-100 text-sm mt-1">Cornell Dragon Boat Club</p>
+        </div>
+
+        <!-- Mascot Area -->
+        <div class="flex flex-col items-center mt-6 z-10 relative h-40">
+            <!-- Speech Bubble -->
+            <div id="speech-bubble" class="bg-white border-2 border-red-100 text-stone-700 text-sm font-medium py-2 px-4 rounded-2xl shadow-sm relative mb-4 max-w-[80%] text-center transition-opacity duration-300">
+                <span id="dragon-text">Hi! I'm here to help you order some delicious Chè Thái!</span>
+                <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white border-b-2 border-r-2 border-red-100 rotate-45"></div>
+            </div>
+
+            <!-- SVG Dragon -->
+            <div id="dragon-container" class="w-24 h-24 relative animate-bob">
+                <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-md overflow-visible">
+                    <!-- Dragon Body -->
+                    <path d="M 30 80 C 30 45, 40 35, 50 35 C 60 35, 70 45, 70 80 Z" fill="#dc2626" />
+                    <!-- Dragon Belly -->
+                    <path d="M 40 80 C 40 55, 45 45, 50 45 C 55 45, 60 55, 60 80 Z" fill="#fca5a5" />
+                    <!-- Dragon Head -->
+                    <circle cx="50" cy="35" r="22" fill="#dc2626" />
+                    <!-- Snout -->
+                    <ellipse cx="50" cy="44" rx="14" ry="10" fill="#fca5a5" />
+                    <!-- Nostrils -->
+                    <circle cx="45" cy="42" r="2" fill="#991b1b" />
+                    <circle cx="55" cy="42" r="2" fill="#991b1b" />
+                    <!-- Eyes (Dynamic via JS) -->
+                    <g id="dragon-eyes">
+                        <path d="M 38 30 Q 42 25 46 30" fill="none" stroke="#1c1917" stroke-width="2.5" stroke-linecap="round" />
+                        <path d="M 54 30 Q 58 25 62 30" fill="none" stroke="#1c1917" stroke-width="2.5" stroke-linecap="round" />
+                    </g>
+                    <!-- Horns -->
+                    <path d="M 33 18 Q 25 5 20 12 Q 28 22 33 22 Z" fill="#fbbf24" />
+                    <path d="M 67 18 Q 75 5 80 12 Q 72 22 67 22 Z" fill="#fbbf24" />
+                    <!-- Spikes -->
+                    <polygon points="50,13 44,3 56,3" fill="#fbbf24" />
+                    <polygon points="32,45 20,40 26,52" fill="#fbbf24" />
+                    <polygon points="68,45 80,40 74,52" fill="#fbbf24" />
+                    <!-- Arms -->
+                    <path d="M 35 60 Q 22 65 28 72" fill="none" stroke="#dc2626" stroke-width="7" stroke-linecap="round" />
+                    <path d="M 65 60 Q 78 65 72 72" fill="none" stroke="#dc2626" stroke-width="7" stroke-linecap="round" />
+                </svg>
+            </div>
+        </div>
+
+        <!-- Form Area (Wizard) -->
+        <div class="flex-1 relative overflow-hidden">
+            <form id="order-form" class="absolute inset-0 w-full h-full transition-transform duration-500 ease-in-out flex">
+                
+                <!-- Step 1: Intro -->
+                <div class="w-full h-full flex-shrink-0 p-6 flex flex-col justify-center step-container" data-step="0">
+                    <h2 class="text-xl font-bold text-stone-800 mb-4 text-center">Welcome!</h2>
+                    <p class="text-stone-600 text-center mb-6 leading-relaxed">
+                        Please support our goal of racing in San Francisco by purchasing a delicious, refreshing cup of sweet Vietnamese fruit cocktail :))
+                    </p>
+                    <div class="bg-red-50 p-4 rounded-xl border border-red-100 mb-8 text-center">
+                        <span class="block font-bold text-red-600 text-lg">1 Cup of Chè Thái</span>
+                        <span class="block text-stone-500 font-medium">$5.00</span>
+                    </div>
+                    <button type="button" class="next-btn w-full bg-red-600 text-white font-bold py-3 rounded-xl shadow-md hover:bg-red-700 transition-colors">Start Order</button>
+                </div>
+
+                <!-- Step 2: Personal Info -->
+                <div class="w-full h-full flex-shrink-0 p-6 flex flex-col step-container overflow-y-auto" data-step="1">
+                    <h2 class="text-xl font-bold text-stone-800 mb-4">Personal Info</h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-stone-700 mb-1">Full Name *</label>
+                            <input type="text" id="fullName" required class="w-full border border-stone-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-stone-700 mb-1">Email *</label>
+                            <input type="email" id="email" required class="w-full border border-stone-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all">
+                        </div>
+                        <div class="flex space-x-4">
+                            <div class="flex-1">
+                                <label class="block text-sm font-medium text-stone-700 mb-1">Net ID *</label>
+                                <input type="text" id="netId" required class="w-full border border-stone-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all">
+                            </div>
+                            <div class="flex-1">
+                                <label class="block text-sm font-medium text-stone-700 mb-1">Grad Year *</label>
+                                <select id="gradYear" required class="w-full border border-stone-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all bg-white">
+                                    <option value="">Select...</option>
+                                    <option value="2024">2024</option>
+                                    <option value="2025">2025</option>
+                                    <option value="2026">2026</option>
+                                    <option value="2027">2027</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-auto pt-6 flex space-x-3">
+                        <button type="button" class="prev-btn flex-1 bg-stone-200 text-stone-700 font-bold py-3 rounded-xl hover:bg-stone-300 transition-colors">Back</button>
+                        <button type="button" class="next-btn flex-1 bg-red-600 text-white font-bold py-3 rounded-xl shadow-md hover:bg-red-700 transition-colors">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Order & Referrals -->
+                <div class="w-full h-full flex-shrink-0 p-6 flex flex-col step-container overflow-y-auto" data-step="2">
+                    <h2 class="text-xl font-bold text-stone-800 mb-4">Your Order</h2>
+                    
+                    <div class="bg-stone-50 p-4 rounded-xl border border-stone-200 mb-6 flex items-center justify-between">
+                        <div>
+                            <h3 class="font-bold text-stone-800">Chè Thái</h3>
+                            <p class="text-sm text-stone-500">$5.00 / cup</p>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <button type="button" id="btn-minus" class="w-8 h-8 rounded-full bg-white border border-stone-300 flex items-center justify-center text-stone-600 hover:bg-stone-100 transition-colors font-bold">-</button>
+                            <input type="number" id="quantity" value="0" min="0" class="w-12 text-center font-bold text-lg bg-transparent outline-none" readonly>
+                            <button type="button" id="btn-plus" class="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center hover:bg-red-200 transition-colors font-bold">+</button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium text-stone-700 mb-1">Phone Number or Venmo ID *</label>
+                            <p class="text-xs text-stone-500 mb-2">Whichever payment method you will use</p>
+                            <input type="text" id="paymentId" required class="w-full border border-stone-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-stone-700 mb-1">Referrals (Optional)</label>
+                            <p class="text-xs text-stone-500 mb-2">If a club member referred you, please write their name(s).</p>
+                            <input type="text" id="referrals" class="w-full border border-stone-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all">
+                        </div>
+                    </div>
+
+                    <div class="mt-auto pt-4 flex space-x-3">
+                        <button type="button" class="prev-btn flex-1 bg-stone-200 text-stone-700 font-bold py-3 rounded-xl hover:bg-stone-300 transition-colors">Back</button>
+                        <button type="button" class="next-btn flex-1 bg-red-600 text-white font-bold py-3 rounded-xl shadow-md hover:bg-red-700 transition-colors">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Payment & Pickup -->
+                <div class="w-full h-full flex-shrink-0 p-6 flex flex-col step-container overflow-y-auto" data-step="3">
+                    <h2 class="text-xl font-bold text-stone-800 mb-4">Payment & Pickup</h2>
+                    
+                    <div class="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-medium text-stone-700">Total Due:</span>
+                            <span class="text-2xl font-bold text-red-600" id="display-total">$0.00</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 text-sm text-stone-700 mb-6 bg-stone-50 p-4 rounded-xl border border-stone-200">
+                        <p><strong>Step 1:</strong> Venmo <strong>@HilaryKuang</strong> or Zelle <strong>415-307-1306</strong> for your order to be purchased! If you don't have Venmo or Zelle, stop by our table and order in-person with cash.</p>
+                        <p><strong>Step 2:</strong> Write <span class="bg-yellow-100 px-1 rounded font-mono">Dragonboat + <span id="summary-qty">0</span> cups + <span id="summary-netid">netID</span></span> in the payment subject line/description.</p>
+                        <p><strong>Step 3:</strong> You will receive an email regarding pickup once we receive your payment!</p>
+                        <p class="text-xs text-stone-500 mt-2 pt-2 border-t border-stone-200">Contact: Reach out to en329@cornell.edu with any questions!</p>
+                    </div>
+
+                    <label class="flex items-start space-x-3 cursor-pointer p-3 border border-stone-200 rounded-xl hover:bg-stone-50 transition-colors">
+                        <input type="checkbox" id="pickupAgreement" required class="mt-1 w-5 h-5 text-red-600 rounded focus:ring-red-500">
+                        <span class="text-sm text-stone-700 leading-tight">
+                            I agree to pick up my order from Willard Straight Hall on April 10, 2026 between 10am-2pm. If not, I will send a friend to pick them up. *
+                        </span>
+                    </label>
+
+                    <div class="mt-auto pt-6 flex space-x-3">
+                        <button type="button" class="prev-btn flex-1 bg-stone-200 text-stone-700 font-bold py-3 rounded-xl hover:bg-stone-300 transition-colors">Back</button>
+                        <button type="submit" id="submit-btn" class="flex-1 bg-red-600 text-white font-bold py-3 rounded-xl shadow-md hover:bg-red-700 transition-colors flex justify-center items-center">
+                            <span>Submit Order</span>
+                            <svg id="submit-spinner" class="animate-spin ml-2 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 5: Success -->
+                <div class="w-full h-full flex-shrink-0 p-6 flex flex-col justify-center items-center step-container text-center" data-step="4">
+                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-6">
+                        <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-stone-800 mb-2">Order Received!</h2>
+                    <p class="text-stone-600 mb-8">Thank you for supporting the Cornell Dragon Boat Club. Don't forget to send your payment!</p>
+                    <button type="button" onclick="location.reload()" class="bg-stone-200 text-stone-700 font-bold py-3 px-8 rounded-xl hover:bg-stone-300 transition-colors">Place Another Order</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <script src="/script.js"></script>
+</body>
+</html>
