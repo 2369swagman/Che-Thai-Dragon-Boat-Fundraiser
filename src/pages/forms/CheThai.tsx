@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Home } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import TriangleGrid from '../../components/TriangleGrid';
 
 const PRICE_PER_CUP = 5;
 
@@ -13,12 +15,12 @@ const dialogues = [
 ];
 
 export default function CheThai() {
+    const [isLoading, setIsLoading] = useState(true);
     const [currentStep, setCurrentStep] = useState(0);
     const [formData, setFormData] = useState({
         fullName: '',
         email: '',
         netId: '',
-        gradYear: '',
         quantity: 0,
         paymentId: '',
         referrals: '',
@@ -30,6 +32,12 @@ export default function CheThai() {
 
     const d = dialogues[currentStep];
 
+    useEffect(() => {
+        // Trigger the exit animation after a short delay
+        const t = setTimeout(() => setIsLoading(false), 100);
+        return () => clearTimeout(t);
+    }, []);
+
     const handleNext = () => {
         const newErrors: Record<string, boolean> = {};
         let isValid = true;
@@ -38,7 +46,6 @@ export default function CheThai() {
             if (!formData.fullName.trim()) { newErrors.fullName = true; isValid = false; }
             if (!formData.email.trim()) { newErrors.email = true; isValid = false; }
             if (!formData.netId.trim()) { newErrors.netId = true; isValid = false; }
-            if (!formData.gradYear) { newErrors.gradYear = true; isValid = false; }
         } else if (currentStep === 2) {
             if (formData.quantity <= 0) {
                 newErrors.quantity = true; 
@@ -156,8 +163,20 @@ export default function CheThai() {
     };
 
     return (
-        <div className="bg-red-50 text-stone-800 font-sans antialiased min-h-screen flex flex-col items-center justify-center p-4">
-            <div className="max-w-md w-full bg-white rounded-3xl shadow-xl overflow-hidden relative min-h-[600px] flex flex-col">
+        <div className="bg-red-50 text-stone-800 font-sans antialiased min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
+            <AnimatePresence>
+                {isLoading && (
+                    <motion.div
+                        key="triangle-grid-overlay"
+                        className="fixed inset-0 z-[100] pointer-events-none"
+                        exit={{ opacity: 0, transition: { duration: 0.3, delay: 3.5 } }}
+                    >
+                        <TriangleGrid />
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            <div className="max-w-md w-full bg-white rounded-3xl shadow-xl overflow-hidden relative min-h-[600px] flex flex-col z-10">
                 
                 <div className="bg-red-600 text-white p-6 text-center z-10 relative shadow-md">
                     <Link 
@@ -171,7 +190,7 @@ export default function CheThai() {
                     <p className="text-red-100 text-sm mt-1">Cornell Dragon Boat Club</p>
                 </div>
 
-                <div className="flex flex-col items-center mt-6 z-10 relative h-40">
+                <div className="flex flex-col items-center mt-6 z-10 relative min-h-[11rem]">
                     <div 
                         className="bg-white border-2 border-red-100 text-stone-700 text-sm font-medium py-2 px-4 rounded-2xl shadow-sm relative mb-4 max-w-[80%] text-center transition-opacity duration-300"
                         style={{ opacity: dragonOpacity }}
@@ -204,16 +223,18 @@ export default function CheThai() {
                     <form onSubmit={handleSubmit} className="absolute inset-0 w-full h-full transition-transform duration-500 ease-in-out flex" style={{ transform: `translateX(-${currentStep * 100}%)` }}>
                         
                         {/* Step 0: Welcome */}
-                        <div className="w-full h-full flex-shrink-0 p-6 flex flex-col justify-center step-container">
-                            <h2 className="text-xl font-bold text-stone-800 mb-4 text-center">Welcome!</h2>
-                            <p className="text-stone-600 text-center mb-6 leading-relaxed">
+                        <div className="w-full h-full flex-shrink-0 p-6 flex flex-col step-container overflow-y-auto">
+                            <h2 className="text-xl font-bold text-stone-800 mb-2 text-center">Welcome!</h2>
+                            <p className="text-stone-600 text-center mb-4 leading-relaxed text-sm">
                                 Please support our goal of racing in San Francisco by purchasing a delicious, refreshing cup of sweet Vietnamese fruit cocktail :))
                             </p>
-                            <div className="bg-red-50 p-4 rounded-xl border border-red-100 mb-8 text-center">
+                            <div className="bg-red-50 p-3 rounded-xl border border-red-100 mb-4 text-center">
                                 <span className="block font-bold text-red-600 text-lg">1 Cup of Chè Thái</span>
-                                <span className="block text-stone-500 font-medium">$5.00</span>
+                                <span className="block text-stone-500 font-medium text-sm">$5.00</span>
                             </div>
-                            <button type="button" onClick={handleNext} className="w-full bg-red-600 text-white font-bold py-3 rounded-xl shadow-md hover:bg-red-700 transition-colors relative z-20">Start Order</button>
+                            <div className="mt-auto">
+                                <button type="button" onClick={handleNext} className="w-full bg-red-600 text-white font-bold py-3 rounded-xl shadow-md hover:bg-red-700 transition-colors relative z-20">Start Order</button>
+                            </div>
                         </div>
 
                         {/* Step 1: Personal Info */}
@@ -247,21 +268,6 @@ export default function CheThai() {
                                             onChange={e => setFormData({...formData, netId: e.target.value})}
                                             className={`w-full border ${errors.netId ? 'border-red-500 ring-2 ring-red-500' : 'border-stone-300'} rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all`}
                                         />
-                                    </div>
-                                    <div className="flex-1">
-                                        <label className="block text-sm font-medium text-stone-700 mb-1">Grad Year *</label>
-                                        <select 
-                                            value={formData.gradYear}
-                                            onChange={e => setFormData({...formData, gradYear: e.target.value})}
-                                            className={`w-full border ${errors.gradYear ? 'border-red-500 ring-2 ring-red-500' : 'border-stone-300'} rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all bg-white`}
-                                        >
-                                            <option value="">Select...</option>
-                                            <option value="2024">2024</option>
-                                            <option value="2025">2025</option>
-                                            <option value="2026">2026</option>
-                                            <option value="2027">2027</option>
-                                            <option value="Other">Other</option>
-                                        </select>
                                     </div>
                                 </div>
                             </div>

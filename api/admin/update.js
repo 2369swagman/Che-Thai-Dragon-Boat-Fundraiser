@@ -31,6 +31,11 @@ export default async function handler(req, res) {
             return res.status(400).json({ error: 'Missing id or updates' });
         }
 
+        // Prevent modifying the immutable _id field
+        if (updates._id) {
+            delete updates._id;
+        }
+
         const uri = process.env.MONGODB_URI;
         if (!uri) throw new Error('MONGODB_URI is not defined');
 
