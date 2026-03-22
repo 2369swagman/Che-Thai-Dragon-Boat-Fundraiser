@@ -2,12 +2,16 @@ const { MongoClient } = require('mongodb');
 
 // Cache the database connection
 let cachedDb = null;
+let client = null;
 
 async function connectToDatabase(uri) {
     if (cachedDb) {
         return cachedDb;
     }
-    const client = await MongoClient.connect(uri);
+    if (!client) {
+        client = new MongoClient(uri);
+        await client.connect();
+    }
     const db = client.db('Fundraisers');
     cachedDb = db;
     return db;
@@ -50,6 +54,6 @@ module.exports = async function handler(req, res) {
 
     } catch (error) {
         console.error('Database Error:', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(500).json({ error: 'Internal Server Error', details: error.message });
     }
 }
