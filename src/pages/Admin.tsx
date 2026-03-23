@@ -116,7 +116,6 @@ export default function Admin() {
         const stats: Record<string, { count: number, totalRevenue: number, totalOrders: number, formId: string }> = {
             'che-thai': { count: 0, totalRevenue: 0, totalOrders: 0, formId: 'che-thai' }
         };
-        
         submissions.forEach(sub => {
             const id = sub.formId || 'che-thai';
             if (!stats[id]) {

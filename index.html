@@ -1,12 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cornell Dragon Boat Club Fundraiser</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Dragon Mascot -->
+        <div class="dragon-container">
+            <div class="speech-bubble" id="dragon-speech">
+                Hi there! I'm the Cornell Dragon Boat mascot. Ready for some delicious Chè Thái?
+            </div>
+            <div class="dragon">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Simple SVG Dragon -->
+                    <path class="dragon-body" d="M30,80 Q30,40 50,40 Q70,40 70,80 Z" fill="#10b981"/>
+                    <circle cx="40" cy="55" r="5" fill="white"/>
+                    <circle cx="40" cy="55" r="2" fill="black"/>
+                    <circle cx="60" cy="55" r="5" fill="white"/>
+                    <circle cx="60" cy="55" r="2" fill="black"/>
+                    <path d="M45,70 Q50,75 55,70" stroke="white" stroke-width="2" fill="none"/>
+                    <!-- Spikes -->
+                    <polygon points="50,40 45,30 55,30" fill="#059669"/>
+                    <polygon points="40,45 30,35 40,35" fill="#059669"/>
+                    <polygon points="60,45 70,35 60,35" fill="#059669"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Form Container -->
+        <div class="form-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+
+            <form id="fundraiser-form">
+                <!-- Step 0: Intro -->
+                <div class="form-step active" id="step-0">
+                    <h1>Cornell Dragon Boat Club</h1>
+                    <h2>Chè Thái Fundraiser!</h2>
+                    <p>Please support our goal of racing in San Francisco by purchasing a delicious, refreshing cup of sweet Vietnamese fruit cocktail :))</p>
+                    <button type="button" class="btn-next" onclick="nextStep()">Start Order &rarr;</button>
+                </div>
+
+                <!-- Step 1: Personal Info -->
+                <div class="form-step" id="step-1">
+                    <h2>Personal Info</h2>
+                    <div class="input-group">
+                        <label>Full Name *</label>
+                        <input type="text" id="fullName" required placeholder="Ezra Cornell">
+                    </div>
+                    <div class="input-group">
+                        <label>Email *</label>
+                        <input type="email" id="email" required placeholder="ezra@cornell.edu">
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Net ID *</label>
+                            <input type="text" id="netId" required placeholder="ec123">
+                        </div>
+                        <div class="input-group">
+                            <label>Grad Year *</label>
+                            <select id="gradYear" required>
+                                <option value="">Select...</option>
+                                <option value="2026">2026</option>
+                                <option value="2027">2027</option>
+                                <option value="2028">2028</option>
+                                <option value="2029">2029</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn-back" onclick="prevStep()">Back</button>
+                        <button type="button" class="btn-next" onclick="nextStep()">Next &rarr;</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Order -->
+                <div class="form-step" id="step-2">
+                    <h2>Your Order</h2>
+                    <div class="order-box">
+                        <label>Quantity of Chè Thái cups ($5 each)</label>
+                        <div class="quantity-controls">
+                            <button type="button" class="btn-qty" onclick="updateQuantity(-1)">-</button>
+                            <input type="number" id="quantity" value="0" min="0" readonly>
+                            <button type="button" class="btn-qty" onclick="updateQuantity(1)">+</button>
+                        </div>
+                    </div>
+                    <div class="total-box">
+                        <span>Total Cost:</span>
+                        <span id="total-cost">$0</span>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn-back" onclick="prevStep()">Back</button>
+                        <button type="button" class="btn-next" onclick="nextStep()">Next &rarr;</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Payment & Pickup -->
+                <div class="form-step" id="step-3">
+                    <h2>Payment & Pickup</h2>
+                    <div class="input-group">
+                        <label>Phone Number or Venmo ID *</label>
+                        <span class="help-text">Whichever payment method you will use.</span>
+                        <input type="text" id="paymentMethod" required placeholder="@ezra-cornell or 607-123-4567">
+                    </div>
+                    <div class="input-group">
+                        <label>Referrals</label>
+                        <span class="help-text">If a club member referred you, please write their name(s).</span>
+                        <input type="text" id="referrals" placeholder="Optional">
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="pickupAgreed" required>
+                        <label for="pickupAgreed">I agree to pick up my order from Willard Straight Hall on April 10, 2026 between 10am-2pm. If not, I will send a friend to pick them up. *</label>
+                    </div>
+                    <div id="error-message" class="error-message"></div>
+                    <div class="btn-group">
+                        <button type="button" class="btn-back" onclick="prevStep()">Back</button>
+                        <button type="button" class="btn-submit" id="submit-btn" onclick="submitForm()">Submit Order</button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Success -->
+                <div class="form-step" id="step-4">
+                    <div class="success-icon">✓</div>
+                    <h2>Thank You!</h2>
+                    <p>Your order has been recorded.</p>
+                    <div class="instructions-box">
+                        <h3>Payment Instructions</h3>
+                        <p><strong>Step 1:</strong> Venmo <strong>@HilaryKuang</strong> or Zelle <strong>415-307-1306</strong> for your order to be purchased! <br><em>If you don't have Venmo or Zelle, stop by our table and order in-person with cash.</em></p>
+                        <p><strong>Step 2:</strong> Write <strong class="highlight">Dragonboat + <span id="summary-qty">0</span> cups + <span id="summary-netid"></span></strong> in the payment subject line/description.</p>
+                        <p><strong>Step 3:</strong> You will receive an email regarding pickup once we receive your payment!</p>
+                    </div>
+                    <p class="contact-info">Questions? Reach out to <a href="mailto:en329@cornell.edu">en329@cornell.edu</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
 </html>

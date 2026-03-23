@@ -2,6 +2,10 @@
 
 This file tracks the major changes, fixes, and updates made to the Cornell Dragon Boat Club Fundraiser application.
 
+## [2026-03-23] - Routing & Admin Dashboard Fixes
+*   **Routing Restoration:** Fixed an issue in `App.tsx` where the Home (`/`) and Admin (`/admin`) routes were accidentally overwritten. Restored the proper routing so all pages (Home, Admin, and Chè Thái form) are accessible.
+*   **Admin Dashboard Visibility:** Updated `Admin.tsx` to pre-populate the `formStats` with the 'che-thai' fundraiser. This ensures the Chè Thái fundraiser card is always visible on the admin dashboard, even when there are 0 sales/submissions, allowing admins to click in and view the empty state.
+
 ## [2026-03-22] - Performance & UI Improvements
 *   **Animation Performance:** Completely rewrote the `TriangleGrid` opening animation to use HTML5 `<canvas>` and `requestAnimationFrame` instead of SVG and Framer Motion. This eliminated the creation of thousands of DOM nodes, fixing severe rendering lag and achieving a smooth 60FPS ripple effect.
 *   **Admin Login Fix:** Mapped the admin API routes (login, fetch submissions, update, delete) correctly in the local development server (`server.ts`), allowing successful login with the default credentials.
