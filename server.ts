@@ -1,8 +1,13 @@
 import express from "express";
+// @ts-ignore
 import submitHandler from "./api/submit.js";
+// @ts-ignore
 import loginHandler from "./api/admin/login.js";
+// @ts-ignore
 import submissionsHandler from "./api/admin/submissions.js";
+// @ts-ignore
 import updateHandler from "./api/admin/update.js";
+// @ts-ignore
 import deleteHandler from "./api/admin/delete.js";
 import path from "path";
 import { fileURLToPath } from 'url';
