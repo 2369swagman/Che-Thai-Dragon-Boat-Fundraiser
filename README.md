@@ -1,6 +1,6 @@
 Hi! This is the prototype of the official Cornell Dragon Boat Fundraising Platform. 
 
-Check out the official launched version here: https://che-thai-dragon-boat-fundraiser.vercel.app/
+Check out the official launched version here: https://cdbc-fundraising.vercel.app/
 (fully developed by me!)
 
 Git for official app is found here: https://github.com/cornelldragonboatclub/CDBC-Fundraising
