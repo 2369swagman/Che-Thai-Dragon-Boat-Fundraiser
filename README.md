@@ -4,6 +4,5 @@ Check out the official launched version here: https://che-thai-dragon-boat-fundr
 (fully developed by me!)
 
 Git for official app is found here: https://github.com/cornelldragonboatclub/CDBC-Fundraising
-This contains everything you need to run your app locally.
 
 Or view this prototype in AI Studio: https://ai.studio/apps/f5fbce8b-72d6-46cf-b36d-015ab7ce3f00
